@@ -1,0 +1,48 @@
+Mocha is a testing framework. That means it’s used to organize and execute tests. 
+When writing a test, there are two basic function calls you should be aware of: 
+
+    describe() and it(). 
+
+Both are used in our example.
+
+describe() is simply a way to group our tests in Mocha. We can nest our tests in groups as deep 
+as we deem necessary. describe() takes two arguments, the first is the name of the test group, 
+and the second is a callback function.
+
+describe('string name', function(){
+  // can nest more describe()'s here, or tests go here
+});
+
+Recall our example. We have a test group named Array and inside of that a test group named 
+#indexOf() and finally inside of that is our actual test.
+
+it() is used for an individual test case. it() should be written as if you were saying it out loud: 
+“It should equal zero”, “It should log the user in”, etc. it() takes two arguments, a string 
+explaining what the test should do, and a callback function which contains our actual test:
+
+it('should blah blah blah', function(){
+  // Test case goes here
+});
+
+Within our testing framework (Mocha), we can use assertion libraries. An assertion library is a tool 
+to verify things are correct - It’s what actually verifies the test results.
+
+Note that we don’t need to use an assertion library, but they make testing way easier. Mocha allows 
+us to use any assertion library we wish. In the above example (and for all of the other examples), 
+we’re using Node.js’ built-in assert module (in other examples, Chai is used). Hence this line of 
+code where we require the assert module:
+
+var assert = require('assert');
+
+There are a number of different assertion tests included with assert . The one we’ve already used 
+is assert.equal(actual, expected); This tests equality between our actual and expected parameters 
+using double equals (==).
+
+Recall one last time our original example:
+
+it('should return -1 when the value is not present', function(){
+  assert.equal(-1, [1,2,3].indexOf(4));
+});
+
+All we’re doing here is testing if [1,2,3].indexOf(4)); is equal to -1. If our expected parameter 
+equals our actual parameter, the test passes. If it doesn’t, the test fails.

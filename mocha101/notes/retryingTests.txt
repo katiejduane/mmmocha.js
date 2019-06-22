@@ -1,0 +1,100 @@
+Retrying tests
+Mocha provides a functionality for specifying the number of times a failed test can be retried. 
+This is not recommended for unit tests, but it can be useful when writing end-to-end tests (where 
+some external resources may not be available for some reason).
+
+Mocha provides a this.retries() function that allows you specify the number of times a failed test 
+can be retried. For each retry, Mocha re-runs the beforeEach() and afterEach() hooks but not the 
+before() and after() hooks.
+
+The following code snippet shows a simple example that uses the Cypress test runner to visit a webpage. 
+If the server responds with a status code other than 2xx, possibly because of slow network or bad 
+internet connection, the test is marked as failed.
+
+describe('test medium site', function() {
+
+  // all failed tests in this suite will only be retried 2 times
+  this.retries(2);
+  
+  it('should load medium homepage', function() {
+    // can only retry this test 5 times
+    this.retries(5);
+    
+    cy.visit('https://medium.com');
+  })
+  
+})
+
+With this.retries(5), the test is allowed to be retried a maximum of 5 times before it can be marked 
+as failed.
+
+
+Slow tests
+Mocha allows you to define the amount of time that should elapse before tests are considered as being slow. 
+The this.slow() method is available for this purpose. The number passed to this.slow() represents the 
+amount of time in milliseconds.
+
+describe('slow test', function() {
+
+  // Tests will be considered slow after 1 second elapses
+  this.slow(1000);
+  
+  // Completes after the specified 1 second elapses
+  it('should be complete in a second', function(done) {
+    setTimeout(done, 1500);
+  })
+  
+  // Completes immediately
+  it('should be complete instantly', function() {})
+  
+})
+
+Notice the red (1506ms) indicator used to mark the slow test. The test is considered slow because it 
+took more than the specified 1 second (1000ms) to run completely.
+
+
+Timeouts
+By default, Mocha will timeout for any test that takes more than 2 seconds (2000ms) to run completely. 
+When a timeout happens, the test is marked as failed and a timeout error is thrown.
+
+
+However, Mocha provides a this.timeout() method for specifying the amount of time that should elapse 
+before a timeout happens for a given test suite, hook or test case. The number passed to this.timeout() 
+represents the amount of time in milliseconds.
+
+The timeout can be configured differently at different levels (suite, hook and test levels):
+
+describe('some time-consuming operation', function() {
+
+  // set a 5 seconds timeout for this suite
+  this.timeout(5000);
+  
+  before('some long setup', function(done) {
+    // set a hook-level timeout
+    this.timeout(2500);
+    
+    setTimeout(done, 2250);
+  })
+  
+  it('should take less than 200ms', function(done) {
+    // set a test-level timeout
+    this.timeout(200);
+    
+    setTimeout(done, 150);
+  })
+  
+})
+
+Note that, calling this.timeout() with 0 disables timeout completely.
+
+describe('some time-consuming operation', function() {
+
+  // disable timeout for this suite
+  this.timeout(0);
+  
+  // test that takes a long time to complete
+  it('should take a long time', function(done) {
+    setTimeout(done, 10000);
+  })
+  
+})

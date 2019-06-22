@@ -1,0 +1,83 @@
+# Utilizing test hooks
+Mocha makes provision for creating test hooks. Hooks are basically logic that have been configured to 
+run before or after tests. They are useful for setting up preconditions for tests or cleaning up 
+resources after tests. With the default BDD interface, Mocha provides four hooks:
+
+1. before() — Runs once before the first test case in the block
+2. beforeEach() — Runs before each test case
+3. afterEach() — Runs after each test case
+4. after() — Runs once after the last test case in the block
+
+Depending on the hooks that apply to a given test suite, the hooks are run together with the tests in the suite in a definite sequence as illustrated below:
+
+before() -> beforeEach() -> test() -> afterEach() -> after()
+
+
+# Creating hooks
+Each hook basically takes a callback function as argument. The callback function contains logic to be 
+executed when the hook is triggered. The logic can be either synchronous or asynchronous just as it is 
+with regular test cases.
+
+Example:
+
+describe('some module', function() {
+
+  beforeEach(function() {
+    // some logic to run before each test
+    // logic can be sync or async
+  })
+  
+})
+
+Hooks can also take an optional description as first argument which makes it easier to track errors. 
+However, if a named function is passed as argument to a hook, the name of the function is used as 
+description if no explicit description was passed.
+
+describe('some module', function() {
+
+  // HOOK WITH NAMED FUNCTION
+  beforeEach(function createSession() {
+    // beforeEach:createSession
+  })
+  
+  // HOOK WITH DESCRIPTION
+  beforeEach('create a user session', function() {
+    // beforeEach:create a user session
+  })
+  
+})
+
+# The root suite
+Whenever a hook is defined outside a definite describe() block, the hook becomes a root-level hook. 
+Root-level hooks apply to all test files regardless of where they are defined. This is because Mocha 
+implicitly creates a describe() block, called the root suite.
+
+Hence in the following code snippet, the afterEach() hook will be triggered after every test in every file.
+
+var tests = 1;
+
+// Will run after every test in every file
+afterEach(function() {
+  console.log('Test #' + (tests++));
+})
+
+
+Sometimes, you may want to perform an asynchronous operation before running any of your test suites. 
+Mocha allows you to delay the root suite by running the mocha binary with the --delay option. 
+For your project’s test command, it will look like this:
+
+npm test -- --delay
+Running this command instructs Mocha to attach a special run() callback function to the global context. 
+Calling the run() function will instruct Mocha to run all the test suites that have been described. 
+Hence, run() can be called after the asynchronous operation is completed in order to run the tests.
+
+For example, add the following code snippet to any of the test files you created earlier (it must never 
+be inside an it() block):
+
+// Delay running the tests until after 5s
+setTimeout(function() {
+  run()
+}, 5000);
+Now run the tests with the following command:
+
+npm test -- --delay

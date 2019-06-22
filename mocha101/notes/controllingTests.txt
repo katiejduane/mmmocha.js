@@ -1,0 +1,46 @@
+Controlling tests
+Whenever a callback function is not passed as second argument to it(), the test case is marked as 
+pending, which indicates that the test is yet to be written. Pending tests are not failed tests and 
+they are included in the test results.
+
+describe('#flattenArray()', function() {
+  // a pending test
+  it('should flatten array');
+})
+
+
+Including and excluding tests
+You can also specify test suites and test cases that should or should not be run. Mocha provides two 
+helpful methods: only() and skip(), for controlling exclusive and inclusive behavior of test suites 
+and test cases.
+
+Use the describe.skip() method to prevent the tests in a suite from running and the describe.only() 
+method to ensure that the tests in a suite run.
+
+// Tests in this suite will run
+describe.only('#flattenArray()', function() {
+  it('should flatten array', function() {});
+})
+
+// Tests in this suite will not run
+describe('#mergeArray()', function() {
+  it('should merge two arrays', function() {});
+})
+
+The same also applies to test cases using it(). It is possible to skip a test at runtime by calling 
+this.skip() inside the callback function passed to it(). This makes it possible to dynamically skip 
+a test based on some condition.
+
+Calling this.skip() effectively aborts the test. Hence, it is considered best practice to avoid 
+executing further instructions after a call to this.skip(). Every test that is skipped at runtime 
+using this.skip() will be marked as a pending test.
+
+
+You can use .only() and .skip() multiple times to select a set of suites and tests to run. However, 
+you must note the following:
+
+1. Nested suites will still be executed
+2. Hooks will still be executed if present
+3. Tests will have precedence
+
+

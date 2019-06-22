@@ -1,0 +1,74 @@
+So far, you have been exposed to all the tooling that Mocha makes available for writing tests. 
+However, there are still lots of utilities you can leverage on when using Mocha, and a couple of 
+these utilities are only available to you when using the mocha CLI binary.
+
+To get the list of available options you can apply to mocha, run the following command:
+
+mocha -h
+From your project you can use this command instead:
+
+npm test -- -h
+
+Watching test files
+The -w, --watch flag instructs Mocha to watch for changes in test files and re-run the tests. 
+This is very useful for writing tests while in development.
+
+mocha --watch
+
+Async and bail
+The -A, --async-only flag forces all tests to require a callback function or return a promise, 
+thereby behaving asynchronously. Tests that don’t specify a callback function or return a promise 
+will be marked as failed.
+
+mocha --async-only
+The -b, --bail flag forces Mocha to bail after the first test failure.
+
+mocha --bail
+
+Handling timeouts and slow tests
+The -t, --timeout <ms> option allows you to set the timeout for your test cases. Mocha uses a 
+default of 2 seconds. You can set the timeout by specifying the number of milliseconds or a value 
+with an s suffix to specify the time in seconds.
+
+mocha -t 3000
+is equivalent to:
+
+mocha --timeout 3s
+To disable timeouts entirely, you can use --no-timeouts which is equivalent to --timeout 0:
+
+mocha --no-timeouts
+Mocha also allows you to set the threshold for slow running tests by using the -s, --slow <ms> option. 
+The default threshold is 75ms. As you saw earlier, Mocha uses this threshold value to highlight tests 
+that are taking too long to run.
+
+mocha --slow 100
+
+Running matching tests
+The -g, --grep <pattern> flag instructs Mocha to run tests and test suites that match a particular 
+pattern (regular expression), which is internally converted to a RegExp.
+
+The -f, --fgrep <string> flag, as stated earlier, instructs Mocha to run only tests and test suites 
+that contain the specified string.
+
+The following command will run all tests and test suites that contain the string ‘array’.
+
+mocha -f array
+Including files and modules
+
+The -r, --require <module> flag allows you to require modules/libraries that you use in your test files such as assertion libraries instead of manually invoking require() in your code. This works for modules like should.js. However, to access the module’s exports, you will have to require the module in your code.
+
+mocha --require should
+The --file <file> flag allows you to add one or more files you want to be included first in your test suite. These files may contain some form of setup logic required for your tests. The --file flag can be used multiple times to include multiple files.
+
+
+Mocha interface and reporter
+As stated earlier, Mocha provides several interfaces for writing tests. The default is the BDD interface, 
+which is what is being used throughout this guide. The -u, --ui <name> allows you to specify another 
+interface to use.
+
+mocha --ui exports
+The -R, --reporter <name> flag allows you to specify the reporter you prefer for displaying the test 
+results. The default reporter is spec, which is what is being used throughout this guide. 
+Mocha also allows you to specify third-party reporters using this flag.
+
+mocha -R list
