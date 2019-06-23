@@ -1,0 +1,17 @@
+{
+  "name": "temperature",
+  "version": "1.0.0",
+  "description": "mini project for mocha testing",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "eitak enaud",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^6.1.4"
+  }
+}
