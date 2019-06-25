@@ -26,7 +26,6 @@ function recurseReverse(str){
 // console.log(recurseReverse(anotherString))
 
 
-
 // make a frequency counter 2 ways
 let toCount = "supercalifragil isticexpialidocious!";
 let moreToCount = "A horse of course!";
@@ -72,18 +71,52 @@ practice.getRidOfType = function(arr, type){
 
 // remove the duplicates
 let declutterMe = [1,2,3,6,8,1,2,5];
-
+function removeDuplicates(arr){
+    let newArr = arr.filter((item, index) => {
+        return arr.indexOf(item) === index
+    })
+    return newArr;
+}
+// console.log(removeDuplicates(declutterMe))
 
 
 // count unique values
 let vals = [1, 2, 3, 4, 4, 4, 7, 7, 12, 12, 13];
 
+function countUniqueValues(arr) {
+    let i = 0;
+    for (let j = 1; j < arr.length; j++) {
+        if (arr[i] !== arr[j]) {
+            i++;
+            arr[i] = arr[j]
+        }
+    }
+    return i + 1
+}
+// console.log(countUniqueValues(vals))
+
+
+let weirdArrayFromSO = ["jam", "beef", "cream", "jam"]
+
+function countUniqs(arr){
+    let uniqs = arr.reduce((acc, val) => {
+        acc[val] = acc[val] === undefined ? 1 : acc[val] += 1;
+        return acc;
+    }, {});
+    return uniqs
+}
+
+console.log(countUniqs(weirdArrayFromSO))
 
 
 // sum range recursive
-let num = 8;
+let num = 4;
+function sumRange(num){
+    if(num === 0) return num;
+    return num + sumRange(num - 1)
+}
+// console.log(sumRange(num))
 
 
-console.log(practice)
 
 module.exports = practice;
